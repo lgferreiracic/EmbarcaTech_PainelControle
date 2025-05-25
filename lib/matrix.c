@@ -1,13 +1,13 @@
 #include "./lib/matrix.h"
+#include "./lib/matrix_char.h"
 
 //Cores 
 const RGB BLUE = {0, 0, 0.1};
 const RGB CYAN = {0, 0.1, 0.1};
 const RGB BLACK = {0, 0, 0};
-
-uint8_t matrix[5][5] = {0};
-uint16_t water_level = 0;
-uint16_t rain_level = 0;
+const RGB YELLOW = {0.1, 0.1, 0};
+const RGB GREEN = {0, 0.1, 0};
+const RGB RED = {0.1, 0, 0};
 
 PIO pio; //Variável para armazenar a configuração da PIO
 uint sm; //Variável para armazenar o estado da máquina
@@ -60,84 +60,6 @@ void draw_matrix(RGB pixels[NUM_PIXELS]) {
     }
 }
 
-void generate_rain_drops(uint16_t rain_level) {
-    if(rand() % 100 > rain_level)
-        return;
-    uint y = rand() % 5;
-    matrix[0][y] = RAIN;
-}
-
-// Função para mover as gotas para baixo
-void move_rain_drops() {
-    for (int y = 0; y < 5; y++) {
-        if (matrix[4 - water_level][y] == RAIN) {
-            matrix[4 - water_level][y] = EMPTY;
-        }
-    }
-    for (int x = 5 - 2; x >= 0; x--) {
-        for (int y = 0; y < 5; y++) {
-            if (matrix[x][y] == RAIN) {
-                matrix[x][y] = EMPTY;
-                matrix[x + 1][y] = RAIN;
-            }
-        }
-    }
-}
-
-// Função para definir o nível de água
-void set_water_level(uint16_t level) {
-    water_level = level;
-    for(int y = 0; y < 5; y++){
-        if(matrix[2][y] == WATER)
-            matrix[2][y] = EMPTY;
-        if(matrix[3][y] == WATER)
-            matrix[3][y] = EMPTY;
-        matrix[4][y] = EMPTY;
-    }
-
-    if(water_level >= 70) {
-        for(int y = 0; y < 5; y++){
-            matrix[2][y] = WATER;
-            matrix[3][y] = WATER;
-            matrix[4][y] = WATER;
-        }
-    }else if(water_level >= 55){
-        for(int y = 0; y < 5; y++){
-            matrix[3][y] = WATER;
-            matrix[4][y] = WATER;
-        }
-    }
-    else{
-        for(int y = 0; y < 5; y++)
-            matrix[4][y] = WATER;
-    }
-}
-
-void draw_rain_and_water_levels() {
-    RGB pixels[NUM_PIXELS];
-
-    for (int i = 0; i < NUM_PIXELS; i++) {
-        int x = i % 5;
-        int y = i / 5;
-
-        if (matrix[y][x] == WATER) {
-            pixels[i] = BLUE;
-        } else if (matrix[y][x] == RAIN) {
-            pixels[i] = CYAN;
-        } else {
-            pixels[i] = BLACK;
-        }
-    }
-    draw_matrix(pixels);
-}
-
-void update_matrix(uint16_t water_level, uint16_t rain_level) {
-    move_rain_drops();
-    generate_rain_drops(rain_level);
-    set_water_level(water_level);
-    draw_rain_and_water_levels();
-}
-
 void clear_matrix() {
     RGB pixels[NUM_PIXELS];
     for (int i = 0; i < NUM_PIXELS; i++) {
@@ -145,3 +67,16 @@ void clear_matrix() {
     }
     draw_matrix(pixels);
 }
+
+void matrix_update(int aux) {
+    RGB pixels[NUM_PIXELS];
+    for (int i = 0; i < aux; i++) {
+        pixels[i] = RED;
+    }
+    for (int i = aux; i < NUM_PIXELS; i++) {
+        pixels[i] = GREEN;
+    }
+
+    draw_matrix(pixels);
+}
+

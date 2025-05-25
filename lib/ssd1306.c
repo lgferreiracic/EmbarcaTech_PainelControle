@@ -199,9 +199,22 @@ void ssd1306_draw_string(ssd1306_t *ssd, const char *str, uint8_t x, uint8_t y)
   }
 }
 
+// Função para inicializar o display
+void display_init(ssd1306_t *ssd){
+  i2c_init(I2C_PORT, 400000);
+  gpio_set_function(SDA_PIN, GPIO_FUNC_I2C);
+  gpio_set_function(SCL_PIN, GPIO_FUNC_I2C);
+  gpio_pull_up(SDA_PIN);
+  gpio_pull_up(SCL_PIN);
+  ssd1306_init(ssd, SSD1306_WIDTH, SSD1306_HEIGHT, false, SSD1306_ADDR, I2C_PORT);
+  ssd1306_config(ssd);
+  ssd1306_fill(ssd, false);
+  ssd1306_send_data(ssd);
+}
+
 // Função para exibir a tela sobre
 void start_display(ssd1306_t *ssd){
-  ssd1306_fill(ssd, true); // Limpa o display
+  ssd1306_fill(ssd, false); // Limpa o display
   ssd1306_draw_string(ssd, "CEPEDI   TIC37", 8, 10); // Desenha uma string
   ssd1306_draw_string(ssd, "Estabelecendo", 12, 30); // Desenha uma string
   ssd1306_draw_string(ssd, "Conexao", 33, 48); // Desenha uma string      

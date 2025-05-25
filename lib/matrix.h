@@ -40,5 +40,6 @@ void set_water_level(uint16_t level); // Função para definir o nível da água
 void draw_rain_and_water_levels(); // Função para desenhar os níveis de água e chuva na matriz
 void update_matrix(uint16_t water_level, uint16_t rain_level);
 void clear_matrix(); // Função para limpar a matriz de LEDs RGB
+void matrix_update(int aux); // Função para atualizar a matriz de LEDs RGB
 
 #endif

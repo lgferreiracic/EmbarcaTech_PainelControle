@@ -34,6 +34,13 @@ void led_rgb_yellow_color() {
     gpio_put(LED_RED_PIN, true);
 }
 
+// Função para piscar o LED azul
+void led_rgb_blue_color() {
+    gpio_put(LED_GREEN_PIN, false);
+    gpio_put(LED_BLUE_PIN, true);
+    gpio_put(LED_RED_PIN, false);
+}
+
 // Função para desligar os LEDs
 void led_rgb_off() {
     gpio_put(LED_GREEN_PIN, false);

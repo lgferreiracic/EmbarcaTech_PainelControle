@@ -14,6 +14,7 @@ void led_init_all(); // Inicializa todos os LEDs
 void led_rgb_red_color(); // Acende o LED vermelho
 void led_rgb_green_color(); // Acende o LED verde
 void led_rgb_yellow_color(); //Combinação de vermelho e verde
+void led_rgb_blue_color(); // Acende o LED azul
 void led_rgb_off(); // Apaga todos os LEDs
 
 #endif
