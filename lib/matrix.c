@@ -23,9 +23,9 @@ uint matrix_init() {
 //rotina para definição da intensidade de cores do led
 uint32_t matrix_rgb(double r, double g, double b){
   unsigned char R, G, B;
-  R = r * 100;
-  G = g * 100;
-  B = b * 100;
+  R = r * 50;
+  G = g * 50;
+  B = b * 50;
   return (G << 24) | (R << 16) | (B << 8);
 }
 
