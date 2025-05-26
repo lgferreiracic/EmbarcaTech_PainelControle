@@ -23,14 +23,6 @@
 #include "task.h"
 #include "semphr.h"
 
-#include <cyw43_ll.h>
-#include "pico/cyw43_arch.h"       
-#include "lwip/pbuf.h"           
-#include "lwip/tcp.h"            
-#include "lwip/netif.h" 
-
-#define WIFI_SSID "A35 de Lucas"
-#define WIFI_PASSWORD "lucaslucas"
 #define MAX_COUNT 25
 
 char html[2048]; 
@@ -159,9 +151,6 @@ void hardware_init_all(){
     led_init_all(); // Inicializa todos os LEDs
     button_init_all(); // Inicializa todos os botões
     display_init(&ssd); // Inicializa o display OLED SSD1306
-    //start_display(&ssd); // Inicia o display
-    //server_init(); // Inicializa o servidor TCP
-
     gpio_set_irq_enabled_with_callback(JOYSTICK_BUTTON, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler);
 }
 
@@ -173,11 +162,11 @@ int main() {
     xButtonSem = xSemaphoreCreateBinary();
     xContadorSem = xSemaphoreCreateCounting(MAX_COUNT, MAX_COUNT);
 
-    xTaskCreate(vTaskEntrada, "vTaskEntrada", configMINIMAL_STACK_SIZE + 128, NULL, 1, NULL);
-    xTaskCreate(vTaskSaida, "vTaskSaida", configMINIMAL_STACK_SIZE + 128, NULL, 1, NULL);
-    xTaskCreate(vTaskReset, "vTaskReset", configMINIMAL_STACK_SIZE + 128, NULL, 1, NULL);
-    xTaskCreate(vLEDsTask, "vLEDsTask", configMINIMAL_STACK_SIZE + 128, NULL, 1, NULL);
-    xTaskCreate(vMatrixTask, "vMatrixTask", configMINIMAL_STACK_SIZE + 128, NULL, 1, NULL);
+    xTaskCreate(vTaskEntrada, "vTaskEntrada", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+    xTaskCreate(vTaskSaida, "vTaskSaida", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+    xTaskCreate(vTaskReset, "vTaskReset", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+    xTaskCreate(vLEDsTask, "vLEDsTask", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+    xTaskCreate(vMatrixTask, "vMatrixTask", configMINIMAL_STACK_SIZE, NULL, 1, NULL);
 
     vTaskStartScheduler();
     panic_unsupported();

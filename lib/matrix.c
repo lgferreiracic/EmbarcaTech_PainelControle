@@ -1,5 +1,4 @@
 #include "./lib/matrix.h"
-#include "./lib/matrix_char.h"
 
 //Cores 
 const RGB BLUE = {0, 0, 0.1};
